@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>TrueReduce | Futuristic Online Image Compressor</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- SEO Meta Tags -->
+    <meta name="description"
+        content="TrueReduce - A futuristic online image compressor. Reduce image file sizes (JPG, PNG, WebP) to your desired KB without losing quality. Fast, free, and secure." />
+    <meta name="keywords"
+        content="image compressor, compress jpg, compress png, compress webp, reduce image size online, photo compressor, TrueReduce" />
+    <meta name="author" content="TrueReduce" />
+    <meta name="robots" content="index, follow" />
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:title" content="TrueReduce - Futuristic Online Image Compressor" />
+    <meta property="og:description"
+        content="Shrink your images to any size you want without losing quality. Supports JPG, PNG, and WebP." />
+    <meta property="og:image" content="https://thisizasif.github.io/TrueReduce/preview.png" />
+    <!-- replace with real preview -->
+    <meta property="og:url" content="https://thisizasif.github.io/TrueReduce/" />
+    <meta property="og:type" content="website" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="TrueReduce - Futuristic Image Compressor" />
+    <meta name="twitter:description"
+        content="Compress JPG, PNG, and WebP images online with futuristic speed & quality." />
+    <meta name="twitter:image" content="https://thisizasif.github.io/TrueReduce/preview.png" />
+    <!-- replace with real preview -->
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="favicon.ico" /> <!-- replace favicon.png with your logo -->
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0b0c10;
+            --card: #16181d;
+            --text: #e5e7eb;
+            --muted: #9aa1aa;
+            --accent: #4f46e5;
+            --good: #16a34a;
+            --warn: #f59e0b;
+            --bad: #ef4444;
+            --bd: #262a33
+        }
+
+        body {
+            margin: 0;
+            font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, "Helvetica Neue", Arial, sans-serif;
+            background: #f6f7f9;
+            color: #111827
+        }
+
+        .dark body {
+            background: var(--bg);
+            color: var(--text)
+        }
+
+        .wrap {
+            max-width: 980px;
+            margin: 40px auto;
+            padding: 0 16px
+        }
+
+        .title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            justify-content: space-between
+        }
+
+        .card {
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 16px
+        }
+
+        .dark .card {
+            background: var(--card);
+            border-color: var(--bd)
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px
+        }
+
+        @media (max-width:900px) {
+            .grid {
+                grid-template-columns: 1fr
+            }
+        }
+
+        .drop {
+            border: 2px dashed #cbd5e1;
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            cursor: pointer;
+            transition: .15s
+        }
+
+        .drop:hover {
+            border-color: #94a3b8
+        }
+
+        .dark .drop {
+            border-color: #2d323c
+        }
+
+        input,
+        select,
+        button {
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: 1px solid #d1d5db;
+            background: #fff
+        }
+
+        .dark input,
+        .dark select,
+        .dark button {
+            background: #0f1116;
+            border-color: #2d323c;
+            color: var(--text)
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center
+        }
+
+        .btn {
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            font-weight: 600;
+            cursor: pointer
+        }
+
+        .btn-secondary {
+            background: #4b5563;
+            color: #fff;
+            border: none;
+            font-weight: 600;
+            cursor: pointer
+        }
+
+        .btn:disabled,
+        .btn-secondary:disabled {
+            opacity: .6;
+            cursor: not-allowed
+        }
+
+        .muted {
+            color: #6b7280
+        }
+
+        .dark .muted {
+            color: var(--muted)
+        }
+
+        .row {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap
+        }
+
+        .previews {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px
+        }
+
+        .prev {
+            border: 1px dashed #d1d5db;
+            border-radius: 12px;
+            padding: 8px;
+            text-align: center;
+            background: #fafafa
+        }
+
+        .dark .prev {
+            border-color: #2d323c;
+            background: #0f1116
+        }
+
+        .prev img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px
+        }
+
+        .stat {
+            font-size: 14px
+        }
+
+        .ok {
+            color: var(--good)
+        }
+
+        .warn {
+            color: var(--warn)
+        }
+
+        .bad {
+            color: var(--bad)
+        }
+
+        .tag {
+            display: inline-block;
+            font-size: 12px;
+            border: 1px solid #d1d5db;
+            padding: 2px 8px;
+            border-radius: 999px
+        }
+
+        .dark .tag {
+            border-color: #2d323c
+        }
+
+        .note {
+            font-size: 13px;
+            margin-top: 6px
+        }
+
+        .toggle {
+            appearance: none;
+            width: 44px;
+            height: 26px;
+            border-radius: 999px;
+            background: #cbd5e1;
+            position: relative;
+            outline: none;
+            cursor: pointer;
+            border: none
+        }
+
+        .toggle:after {
+            content: "";
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #fff;
+            transition: .2s
+        }
+
+        .toggle:checked {
+            background: var(--accent)
+        }
+
+        .toggle:checked:after {
+            left: 21px
+        }
+
+        .progress {
+            font-size: 13px
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <div class="title">
+            <h1>Image Compressor (Single Image)</h1>
+            <label class="row">
+                <span class="muted">Dark mode</span>
+                <input id="themeToggle" type="checkbox" class="toggle" />
+            </label>
+        </div>
+
+        <div class="card">
+            <div id="dropArea" class="drop">
+                <div class="muted">Drag & drop an image here, or click to choose</div>
+                <input id="fileInput" type="file" accept="image/*" style="display:none" />
+            </div>
+
+            <div class="note muted" id="formatNote" style="display:none"></div>
+
+            <div class="controls" style="margin-top:14px">
+                <div class="row">
+                    <label>Target size</label>
+                    <input id="target" type="number" min="1" value="100" />
+                    <select id="unit">
+                        <option value="KB" selected>KB</option>
+                        <option value="MB">MB</option>
+                    </select>
+                </div>
+                <div class="row">
+                    <label class="muted">Min quality</label>
+                    <input id="minQ" type="number" min="0.1" max="0.95" step="0.05" value="0.25" />
+                </div>
+                <button id="compressBtn" class="btn" disabled>Compress</button>
+                <button id="downloadBtn" class="btn-secondary" disabled>Download</button>
+                <div id="prog" class="progress muted"></div>
+            </div>
+
+            <div class="grid" style="margin-top:18px">
+                <div class="prev">
+                    <div class="row" style="justify-content:space-between">
+                        <strong>Original</strong>
+                        <span id="origMeta" class="tag muted">—</span>
+                    </div>
+                    <img id="origImg" alt="Original preview" />
+                </div>
+                <div class="prev">
+                    <div class="row" style="justify-content:space-between">
+                        <strong>Compressed</strong>
+                        <span id="compMeta" class="tag muted">—</span>
+                    </div>
+                    <img id="compImg" alt="Compressed preview" />
+                </div>
+            </div>
+
+            <div class="stat note" id="summary" style="margin-top:10px"></div>
+        </div>
+    </div>
+
+    <canvas id="canvas" style="display:none"></canvas>
+
+    <script>
+        // --- Theme ---
+        const themeToggle = document.getElementById('themeToggle');
+        const applyTheme = () => document.documentElement.classList.toggle('dark', themeToggle.checked);
+        themeToggle.addEventListener('change', applyTheme);
+        applyTheme();
+
+        // --- Elements ---
+        const dropArea = document.getElementById('dropArea');
+        const fileInput = document.getElementById('fileInput');
+        const formatNote = document.getElementById('formatNote');
+        const targetEl = document.getElementById('target');
+        const unitEl = document.getElementById('unit');
+        const minQEl = document.getElementById('minQ');
+        const compressBtn = document.getElementById('compressBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const prog = document.getElementById('prog');
+
+        const origImg = document.getElementById('origImg');
+        const compImg = document.getElementById('compImg');
+        const origMeta = document.getElementById('origMeta');
+        const compMeta = document.getElementById('compMeta');
+        const summary = document.getElementById('summary');
+
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d', { willReadFrequently: false });
+
+        let currentFile = null;
+        let originalBlobUrl = null;
+        let compressedBlob = null;
+        let compressedBlobUrl = null;
+
+        // Helpers
+        const fmtBytes = (bytes) => {
+            const kb = bytes / 1024;
+            if (kb < 1024) return `${kb.toFixed(2)} KB`;
+            return `${(kb / 1024).toFixed(2)} MB`;
+        };
+
+        const extFromType = (type) => {
+            if (type.includes('jpeg')) return 'jpg';
+            if (type.includes('png')) return 'png';
+            if (type.includes('webp')) return 'webp';
+            return 'jpg';
+        };
+
+        const drawImageOnCanvas = async (file) => {
+            return new Promise((resolve, reject) => {
+                const url = URL.createObjectURL(file);
+                const img = new Image();
+                img.onload = () => {
+                    // For non-JPEGs we'll paint a white background to avoid black where transparency exists.
+                    const isJPEG = file.type === 'image/jpeg' || file.name.toLowerCase().endsWith('.jpg') || file.name.toLowerCase().endsWith('.jpeg');
+                    canvas.width = img.naturalWidth;
+                    canvas.height = img.naturalHeight;
+                    if (!isJPEG) {
+                        ctx.fillStyle = '#ffffff';
+                        ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    } else {
+                        ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    }
+                    ctx.drawImage(img, 0, 0);
+                    URL.revokeObjectURL(url);
+                    resolve({ width: canvas.width, height: canvas.height });
+                };
+                img.onerror = reject;
+                img.src = url;
+            });
+        };
+
+        const canvasToJpegBlob = (quality) =>
+            new Promise((resolve) => canvas.toBlob((b) => resolve(b), 'image/jpeg', quality));
+
+        const binarySearchForTarget = async (targetKB, minQ) => {
+            // Returns best blob <= target (if possible), else smallest we can get above minQ
+            let low = Math.max(0.05, minQ);
+            let high = 1.0;
+            let best = await canvasToJpegBlob(high);
+
+            if (best.size / 1024 <= targetKB) return best;
+
+            // if even min quality is still too large, we'll end with minQ attempt
+            let candidate = await canvasToJpegBlob(low);
+            if (candidate.size / 1024 > targetKB) return candidate;
+
+            for (let i = 0; i < 16; i++) {
+                const mid = (low + high) / 2;
+                const test = await canvasToJpegBlob(mid);
+                const sizeKB = test.size / 1024;
+
+                if (sizeKB > targetKB) {
+                    high = mid;
+                } else {
+                    low = mid;
+                    best = test;
+                }
+                prog.textContent = `Searching quality… (${i + 1}/16)`;
+            }
+            return best;
+        };
+
+        // Drag & drop + click to open
+        dropArea.addEventListener('click', () => fileInput.click());
+        dropArea.addEventListener('dragover', (e) => { e.preventDefault(); dropArea.style.opacity = 0.85; });
+        dropArea.addEventListener('dragleave', () => { dropArea.style.opacity = 1; });
+        dropArea.addEventListener('drop', (e) => {
+            e.preventDefault(); dropArea.style.opacity = 1;
+            if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+                handleFile(e.dataTransfer.files[0]);
+            }
+        });
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files && e.target.files[0]) handleFile(e.target.files[0]);
+        });
+
+        async function handleFile(file) {
+            currentFile = file;
+            compressedBlob = null;
+            formatNote.style.display = 'none';
+            prog.textContent = '';
+            compImg.src = '';
+            compMeta.textContent = '—';
+            summary.textContent = '';
+            downloadBtn.disabled = true;
+
+            // Preview original
+            if (originalBlobUrl) URL.revokeObjectURL(originalBlobUrl);
+            originalBlobUrl = URL.createObjectURL(file);
+            origImg.src = originalBlobUrl;
+
+            const ext = extFromType(file.type || file.name.toLowerCase());
+            origMeta.textContent = `${fmtBytes(file.size)} • ${ext.toUpperCase()}`;
+
+            // Load to canvas
+            await drawImageOnCanvas(file);
+
+            // JPG stays JPG; others will be converted to JPG
+            const isJPEG = file.type === 'image/jpeg' || file.name.toLowerCase().endsWith('.jpg') || file.name.toLowerCase().endsWith('.jpeg');
+            if (!isJPEG) {
+                formatNote.style.display = 'block';
+                formatNote.innerHTML = `⚠️ <b>Note:</b> This tool targets a specific size by adjusting JPEG quality. 
+      Your <code>${ext.toUpperCase()}</code> will be <b>converted to JPG</b> (same width/height). Any transparency will become white.`;
+            }
+
+            compressBtn.disabled = false;
+        }
+
+        // Compress flow
+        compressBtn.addEventListener('click', async () => {
+            if (!currentFile) return;
+
+            compressBtn.disabled = true;
+            downloadBtn.disabled = true;
+            prog.textContent = 'Starting…';
+
+            // Target (KB)
+            let target = Number(targetEl.value || 0);
+            if (unitEl.value === 'MB') target *= 1024;
+            const minQ = Math.max(0.05, Math.min(0.95, Number(minQEl.value || 0.25)));
+
+            if (!target || target <= 0) {
+                alert('Enter a valid target size.');
+                compressBtn.disabled = false;
+                prog.textContent = '';
+                return;
+            }
+
+            // If original already <= target, just offer original for download (no recompression)
+            if (currentFile.size / 1024 <= target) {
+                prog.textContent = 'Original already smaller than target.';
+                compressedBlob = currentFile;
+                if (compressedBlobUrl) URL.revokeObjectURL(compressedBlobUrl);
+                compressedBlobUrl = URL.createObjectURL(compressedBlob);
+                compImg.src = compressedBlobUrl;
+                compMeta.textContent = `${fmtBytes(currentFile.size)} • JPG`;
+                const pct = 0;
+                summary.innerHTML = `🎯 Target: <b>${target} KB</b> • Final: <span class="ok"><b>${fmtBytes(currentFile.size)}</b></span> • Change: ${pct}%`;
+                downloadBtn.disabled = false;
+                compressBtn.disabled = false;
+                prog.textContent = '';
+                return;
+            }
+
+            try {
+                compressedBlob = await binarySearchForTarget(target, minQ);
+                if (compressedBlobUrl) URL.revokeObjectURL(compressedBlobUrl);
+                compressedBlobUrl = URL.createObjectURL(compressedBlob);
+                compImg.src = compressedBlobUrl;
+                compMeta.textContent = `${fmtBytes(compressedBlob.size)} • JPG`;
+
+                const origKB = currentFile.size / 1024;
+                const finalKB = compressedBlob.size / 1024;
+                const reduction = Math.max(0, ((origKB - finalKB) / origKB) * 100).toFixed(1);
+                const delta = (finalKB - target).toFixed(2);
+
+                const closeClass = finalKB <= target ? 'ok' : 'warn';
+                summary.innerHTML =
+                    `📂 Original: <b>${fmtBytes(currentFile.size)}</b> → ✅ Final: <span class="${closeClass}"><b>${fmtBytes(compressedBlob.size)}</b></span> ` +
+                    `(−${reduction}%).<br>` +
+                    `🎯 Target: <b>${target} KB</b> • Diff: <b>${delta} KB</b> ${finalKB <= target ? '(under target)' : '(slightly over; min quality reached)'} ` +
+                    `<br><span class="muted">Dimensions preserved: ${canvas.width}×${canvas.height}px</span>`;
+
+                downloadBtn.disabled = false;
+            } catch (e) {
+                alert('Compression failed. Try another image.');
+                console.error(e);
+            } finally {
+                compressBtn.disabled = false;
+                prog.textContent = '';
+            }
+        });
+
+        // Download flow
+        downloadBtn.addEventListener('click', () => {
+            if (!compressedBlob) return;
+
+            const base = currentFile.name.replace(/\.(jpe?g|png|webp|gif|bmp|tiff|heic|raw)$/i, '');
+            triggerDownload(compressedBlobUrl, `${base}-compressed.jpg`);
+        });
+
+        function triggerDownload(url, filename) {
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+        }
+    </script>
+</body>
+
+</html>
